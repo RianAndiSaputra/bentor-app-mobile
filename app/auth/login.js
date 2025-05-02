@@ -1,5 +1,5 @@
 // app/auth/login.js
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   View, 
   Text, 
@@ -10,7 +10,9 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
-  ScrollView
+  ScrollView,
+  Animated,
+  Easing
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
@@ -22,37 +24,163 @@ const LoginScreen = () => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
+  
+  // Enhanced animation values
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const scaleAnim = useRef(new Animated.Value(0.9)).current;
+  const slideAnim = useRef(new Animated.Value(30)).current;
+  
+  // Background animations
+  const circleScaleAnim = useRef(new Animated.Value(0.8)).current;
+  const circlePositionAnim = useRef(new Animated.Value(-150)).current;
+  const becakAnim = useRef(new Animated.Value(-100)).current;
+
+  useEffect(() => {
+    // Start animations for all elements when component mounts
+    Animated.parallel([
+      // Hero widget animations
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 600,
+        useNativeDriver: true,
+      }),
+      Animated.timing(scaleAnim, {
+        toValue: 1,
+        duration: 600,
+        easing: Easing.out(Easing.back(1.5)),
+        useNativeDriver: true,
+      }),
+      Animated.timing(slideAnim, {
+        toValue: 0,
+        duration: 600,
+        useNativeDriver: true,
+      }),
+      
+      // Background animations
+      Animated.timing(circleScaleAnim, {
+        toValue: 1,
+        duration: 800,
+        easing: Easing.out(Easing.exp),
+        useNativeDriver: true,
+      }),
+      Animated.timing(circlePositionAnim, {
+        toValue: -100,
+        duration: 800,
+        easing: Easing.out(Easing.exp),
+        useNativeDriver: true,
+      }),
+      Animated.timing(becakAnim, {
+        toValue: 0,
+        duration: 700,
+        easing: Easing.out(Easing.back(1.2)),
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, []);
 
   const handleLogin = () => {
-    // Handle login logic here
-    console.log('Login attempted with:', email, password);
-    // For now, just navigate to home/dashboard
-    router.replace('/home');
+    // Animate out before navigation
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+      }),
+      Animated.timing(scaleAnim, {
+        toValue: 1.2,
+        duration: 300,
+        useNativeDriver: true,
+      }),
+      // Animate circle and becak for seamless transition
+      Animated.timing(circleScaleAnim, {
+        toValue: 1.3,
+        duration: 400,
+        useNativeDriver: true,
+      }),
+      Animated.timing(becakAnim, {
+        toValue: 50,
+        duration: 300,
+        useNativeDriver: true,
+      }),
+    ]).start(() => {
+      router.replace('/home');
+    });
   };
 
   const handleSignUp = () => {
-    router.push('/auth/registrasi');
+    // Animate out before navigation
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 0,
+        duration: 400,
+        useNativeDriver: true,
+      }),
+      Animated.timing(scaleAnim, {
+        toValue: 0.8,
+        duration: 400,
+        useNativeDriver: true,
+      }),
+      // Create an expanding circle effect
+      Animated.timing(circleScaleAnim, {
+        toValue: 1.2,
+        duration: 400,
+        useNativeDriver: true,
+      }),
+      // Move becak out of the way
+      Animated.timing(becakAnim, {
+        toValue: -30,
+        duration: 300,
+        useNativeDriver: true,
+      }),
+    ]).start(() => {
+      router.push('/auth/registrasi');
+    });
   };
 
   return (
     <View style={styles.container}>
-      {/* Becak Image in top right corner */}
-      <Image 
+      {/* Becak Image with animation */}
+      <Animated.Image 
         source={require('../../assets/images/becak.png')} 
-        style={styles.becakImage}
+        style={[
+          styles.becakImage,
+          {
+            transform: [
+              { translateX: becakAnim },
+              { scale: Animated.add(0.9, Animated.multiply(fadeAnim, 0.1)) }
+            ]
+          }
+        ]}
         resizeMode="contain"
       />
       
-      {/* Green circle background */}
-      <View style={styles.greenCircle} />
+      {/* Green circle background with animation */}
+      <Animated.View style={[
+        styles.greenCircle,
+        {
+          transform: [
+            { scale: circleScaleAnim },
+            { translateX: circlePositionAnim }
+          ]
+        }
+      ]} />
 
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <KeyboardAvoidingView 
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={styles.keyboardAvoidingView}
         >
-          {/* Hero Widget - Login Form */}
-          <View style={styles.heroContainer}>
+          {/* Hero Widget - Login Form with Animations */}
+          <Animated.View style={[
+            styles.heroContainer,
+            {
+              opacity: fadeAnim,
+              transform: [
+                { scale: scaleAnim },
+                { translateY: slideAnim }
+              ]
+            }
+          ]}>
             <Text style={styles.heroTitle}>Welcome Back</Text>
             <Text style={styles.heroSubtitle}>Sign in to continue your journey</Text>
 
@@ -112,7 +240,7 @@ const LoginScreen = () => {
               <Text style={styles.signUpText}>Don't have an account? </Text>
               <Text style={[styles.signUpText, styles.signUpLink]}>Sign Up</Text>
             </TouchableOpacity>
-          </View>
+          </Animated.View>
         </KeyboardAvoidingView>
       </ScrollView>
     </View>

@@ -1,5 +1,5 @@
-// app/auth/register.js
-import React, { useState } from 'react';
+// app/auth/registrasi.js
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   View, 
   Text, 
@@ -10,7 +10,9 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
-  ScrollView
+  ScrollView,
+  Animated,
+  Easing
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
@@ -24,37 +26,163 @@ const RegisterScreen = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
+  
+  // Enhanced animation values
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const scaleAnim = useRef(new Animated.Value(1.2)).current; // Start larger for zoom-in effect
+  const slideAnim = useRef(new Animated.Value(30)).current;
+  
+  // Background animations
+  const circleScaleAnim = useRef(new Animated.Value(1.2)).current; // Start larger for zoom-in effect
+  const circlePositionAnim = useRef(new Animated.Value(-80)).current;
+  const becakAnim = useRef(new Animated.Value(-30)).current;
+
+  useEffect(() => {
+    // Start animations for all elements when component mounts
+    Animated.parallel([
+      // Hero widget animations
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 600,
+        useNativeDriver: true,
+      }),
+      Animated.timing(scaleAnim, {
+        toValue: 1,
+        duration: 600,
+        easing: Easing.out(Easing.back(1.5)),
+        useNativeDriver: true,
+      }),
+      Animated.timing(slideAnim, {
+        toValue: 0,
+        duration: 600,
+        useNativeDriver: true,
+      }),
+      
+      // Background animations
+      Animated.timing(circleScaleAnim, {
+        toValue: 1,
+        duration: 800,
+        easing: Easing.out(Easing.exp),
+        useNativeDriver: true,
+      }),
+      Animated.timing(circlePositionAnim, {
+        toValue: -100,
+        duration: 800,
+        easing: Easing.out(Easing.exp),
+        useNativeDriver: true,
+      }),
+      Animated.timing(becakAnim, {
+        toValue: 0,
+        duration: 700,
+        easing: Easing.out(Easing.back(1.2)),
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, []);
 
   const handleRegister = () => {
-    // Handle registration logic here
-    console.log('Registration attempted with:', { name, email, password });
-    // For now, just navigate back to login
-    router.replace('/auth/login');
+    // Animate out before navigation
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+      }),
+      Animated.timing(scaleAnim, {
+        toValue: 0.8,
+        duration: 300,
+        useNativeDriver: true,
+      }),
+      // Animate circle and becak for seamless transition
+      Animated.timing(circleScaleAnim, {
+        toValue: 1.3,
+        duration: 400,
+        useNativeDriver: true,
+      }),
+      Animated.timing(becakAnim, {
+        toValue: 50,
+        duration: 300,
+        useNativeDriver: true,
+      }),
+    ]).start(() => {
+      router.replace('/auth/login');
+    });
   };
 
   const handleLogin = () => {
-    router.push('/auth/login');
+    // Animate out before navigation
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 0,
+        duration: 400,
+        useNativeDriver: true,
+      }),
+      Animated.timing(scaleAnim, {
+        toValue: 1.2,
+        duration: 400,
+        useNativeDriver: true,
+      }),
+      // Create a contracting circle effect (opposite of login-to-register transition)
+      Animated.timing(circleScaleAnim, {
+        toValue: 0.8,
+        duration: 400,
+        useNativeDriver: true,
+      }),
+      // Move becak back to original position
+      Animated.timing(becakAnim, {
+        toValue: -100,
+        duration: 300,
+        useNativeDriver: true,
+      }),
+    ]).start(() => {
+      router.push('/auth/login');
+    });
   };
 
   return (
     <View style={styles.container}>
-      {/* Becak Image in top right corner */}
-      <Image 
+      {/* Becak Image with animation */}
+      <Animated.Image 
         source={require('../../assets/images/becak.png')} 
-        style={styles.becakImage}
+        style={[
+          styles.becakImage,
+          {
+            transform: [
+              { translateX: becakAnim },
+              { scale: Animated.add(0.9, Animated.multiply(fadeAnim, 0.1)) }
+            ]
+          }
+        ]}
         resizeMode="contain"
       />
       
-      {/* Green circle background */}
-      <View style={styles.greenCircle} />
+      {/* Green circle background with animation */}
+      <Animated.View style={[
+        styles.greenCircle,
+        {
+          transform: [
+            { scale: circleScaleAnim },
+            { translateX: circlePositionAnim }
+          ]
+        }
+      ]} />
 
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <KeyboardAvoidingView 
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={styles.keyboardAvoidingView}
         >
-          {/* Hero Widget - Registration Form */}
-          <View style={styles.heroContainer}>
+          {/* Hero Widget - Registration Form with Animations */}
+          <Animated.View style={[
+            styles.heroContainer,
+            {
+              opacity: fadeAnim,
+              transform: [
+                { scale: scaleAnim },
+                { translateY: slideAnim }
+              ]
+            }
+          ]}>
             <Text style={styles.heroTitle}>Create Account</Text>
             <Text style={styles.heroSubtitle}>Join us to start your journey</Text>
 
@@ -138,7 +266,7 @@ const RegisterScreen = () => {
               <Text style={styles.loginText}>Already have an account? </Text>
               <Text style={[styles.loginText, styles.loginLink]}>Sign In</Text>
             </TouchableOpacity>
-          </View>
+          </Animated.View>
         </KeyboardAvoidingView>
       </ScrollView>
     </View>
