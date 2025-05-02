@@ -271,7 +271,7 @@ const HomeScreen = () => {
               >
                 <Text style={styles.bookButtonText}>
                   {selectedService === 'ride' ? 'PESAN BECAK SEKARANG' : 
-                   selectedService === 'horse' ? 'PESAN Andong' : 'JADWALKAN WISATA'}
+                   selectedService === 'horse' ? 'PESAN ' : 'JADWALKAN WISATA'}
                 </Text>
               </LinearGradient>
             </TouchableOpacity>
@@ -376,7 +376,7 @@ const HomeScreen = () => {
           
           <TouchableOpacity 
             style={styles.navItem} 
-            onPress={() => router.push('/messages')}
+            onPress={() => router.push('/riwayat-pesan')}
           >
             <MaterialIcons 
               name="chat" 
@@ -389,7 +389,7 @@ const HomeScreen = () => {
           
           <TouchableOpacity 
             style={styles.navItem} 
-            onPress={() => router.push('/profile')}
+            onPress={() => router.push('/account')}
           >
             <MaterialIcons 
               name="person" 
