@@ -33,7 +33,7 @@ const HomeScreen = () => {
   const [balance, setBalance] = useState(250000);
   const [currentLocation, setCurrentLocation] = useState('Malioboro, Yogyakarta');
   const [recentDestinations, setRecentDestinations] = useState([
-    { id: 1, name: 'Keraton Yogyakarta', distance: '2.3', icon: 'palace' },
+    { id: 1, name: 'Keraton Yogyakarta', distance: '2.3', icon: 'home' },
     { id: 2, name: 'Taman Sari', distance: '3.1', icon: 'water' },
     { id: 3, name: 'Alun-Alun Kidul', distance: '1.8', icon: 'star' },
   ]);
