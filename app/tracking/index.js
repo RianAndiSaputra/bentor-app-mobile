@@ -122,43 +122,56 @@ const TrackingScreen = () => {
       
       // Update estimated arrival time
       if (tripStatus === 'onTheWay') {
-        setEstimatedArrival(prev => Math.max(0, prev - 1));
-        
-        // Check if driver has arrived at pickup
-        if (estimatedArrival <= 1) {
-          setTripStatus('arrived');
+        setEstimatedArrival(prev => {
+          const newValue = Math.max(0, prev - 1);
           
-          // After 5 seconds, start the trip
-          setTimeout(() => {
-            setTripStatus('inProgress');
-            setEstimatedArrival(10); // Reset for trip duration
-          }, 5000);
-        }
+          // Automatically update status when time reaches 0
+          if (newValue === 0 && tripStatus === 'onTheWay') {
+            setTripStatus('arrived');
+            // After 5 seconds, start the trip
+            setTimeout(() => {
+              setTripStatus('inProgress');
+              setEstimatedArrival(10); // Reset for trip duration
+            }, 5000);
+          }
+          
+          return newValue;
+        });
       } else if (tripStatus === 'inProgress') {
-        setEstimatedArrival(prev => Math.max(0, prev - 1));
-        
-        // Check if driver has arrived at destination
-        if (estimatedArrival <= 1) {
-          setTripStatus('completed');
+        setEstimatedArrival(prev => {
+          const newValue = Math.max(0, prev - 1);
           
-          // After 3 seconds, navigate to rating screen
-          setTimeout(() => {
-            router.push('/rating');
-          }, 3000);
-        }
+          // Automatically update status when time reaches 0
+          if (newValue === 0 && tripStatus === 'inProgress') {
+            setTripStatus('completed');
+            // After 3 seconds, navigate to rating screen
+            setTimeout(() => {
+              router.push('/rating');
+            }, 3000);
+          }
+          
+          return newValue;
+        });
       }
     }
   };
   
   const getStatusText = () => {
     switch(tripStatus) {
-      case 'onTheWay': return 'Driver sedang menuju lokasi Anda';
+      case 'onTheWay': 
+        return estimatedArrival > 0 
+          ? 'Driver sedang menuju lokasi Anda' 
+          : 'Driver dateng';
       case 'arrived': return 'Driver telah tiba di lokasi penjemputan';
-      case 'inProgress': return 'Sedang dalam perjalanan ke tujuan';
+      case 'inProgress': 
+        return estimatedArrival > 0 
+          ? 'Sedang dalam perjalanan ke tujuan' 
+          : 'Hampir sampai di tujuan';
       case 'completed': return 'Telah tiba di lokasi tujuan';
       default: return '';
     }
   };
+  
   const getStatusColor = () => {
     switch(tripStatus) {
       case 'onTheWay': return '#B1944D';
@@ -356,11 +369,13 @@ const TrackingScreen = () => {
             {/* Estimated Arrival */}
             <View style={styles.arrivalContainer}>
               <Text style={styles.arrivalText}>
-                {tripStatus === 'onTheWay' ? 'Estimasi tiba:' : 
-                 tripStatus === 'inProgress' ? 'Estimasi sampai tujuan:' : 
+                {tripStatus === 'onTheWay' && estimatedArrival > 0 ? 'Estimasi tiba:' : 
+                 tripStatus === 'onTheWay' && estimatedArrival === 0 ? 'Driver sudah datang' :
+                 tripStatus === 'inProgress' && estimatedArrival > 0 ? 'Estimasi sampai tujuan:' : 
+                 tripStatus === 'inProgress' && estimatedArrival === 0 ? 'Segera sampai' :
                  tripStatus === 'arrived' ? 'Driver telah tiba' : 'Perjalanan selesai'}
               </Text>
-              {(tripStatus === 'onTheWay' || tripStatus === 'inProgress') && (
+              {(tripStatus === 'onTheWay' || tripStatus === 'inProgress') && estimatedArrival > 0 && (
                 <Text style={styles.arrivalTime}>{estimatedArrival} menit</Text>
               )}
             </View>

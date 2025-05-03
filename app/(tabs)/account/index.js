@@ -17,7 +17,7 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
-import { MaterialIcons, FontAwesome5, Ionicons, Feather, AntDesign } from '@expo/vector-icons';
+import { MaterialIcons, FontAwesome5, Ionicons, Feather, AntDesign, FontAwesome, Entypo, MaterialCommunityIcons, Octicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 
 const { width } = Dimensions.get('window');
@@ -44,6 +44,8 @@ const AccountScreen = () => {
     favoriteVehicle: 'Becak Royal Gold',
     membershipLevel: premiumMember ? 'Royal Member' : 'Regular',
     membershipBadge: premiumMember ? '👑' : '⭐',
+    balance: 1250000,
+    points: 4200,
   };
 
   const pickImage = async () => {
@@ -59,13 +61,35 @@ const AccountScreen = () => {
     }
   };
 
+  // Main Account Menu Items
   const accountMenuItems = [
     {
+      icon: <MaterialIcons name="account-balance-wallet" size={24} color="#B1944D" />,
+      title: "Dompet & Pembayaran",
+      subtitle: "Saldo: Rp " + userData.balance.toLocaleString('id-ID'),
+      action: () => router.push('account/wallet')
+    },
+    {
+      icon: <MaterialIcons name="stars" size={24} color="#B1944D" />,
+      title: "Poin Royal",
+      subtitle: userData.points + " poin tersedia",
+      action: () => router.push('account/points')
+    },
+    {
       icon: <MaterialIcons name="history" size={24} color="#B1944D" />,
-      title: "Aktifikas",
-      subtitle: "Perjalanan mewah Anda",
+      title: "Aktivitas",
+      subtitle: "Riwayat perjalanan & transaksi",
       action: () => router.push('/history')
     },
+    {
+      icon: <MaterialCommunityIcons name="ticket-confirmation" size={24} color="#B1944D" />,
+      title: "Voucher Saya",
+      subtitle: "5 voucher tersedia",
+      action: () => router.push('account/vouchers')
+    },
+  ];
+  // Settings Menu Items
+  const settingsMenuItems = [
     {
       icon: <Ionicons name="settings" size={24} color="#B1944D" />,
       title: "Pengaturan",
@@ -73,10 +97,66 @@ const AccountScreen = () => {
       action: () => router.push('/settings')
     },
     {
+      icon: <MaterialIcons name="notifications" size={24} color="#B1944D" />,
+      title: "Notifikasi",
+      subtitle: "Kelola pemberitahuan",
+      action: () => router.push('/notifications')
+    },
+    {
+      icon: <MaterialIcons name="security" size={24} color="#B1944D" />,
+      title: "Keamanan",
+      subtitle: "PIN, sidik jari, dll",
+      action: () => router.push('/security')
+    },
+    {
+      icon: <MaterialIcons name="language" size={24} color="#B1944D" />,
+      title: "Bahasa",
+      subtitle: "Pilih bahasa aplikasi",
+      action: () => router.push('/language')
+    },
+  ];
+
+  // Help & Support Menu Items
+  const helpMenuItems = [
+    {
       icon: <MaterialIcons name="help" size={24} color="#B1944D" />,
       title: "Pusat Bantuan",
-      subtitle: "Layanan pelanggan premium",
+      subtitle: "Pertanyaan umum & solusi",
       action: () => router.push('/help')
+    },
+    {
+      icon: <MaterialIcons name="help/live-chat" size={24} color="#B1944D" />,
+      title: "Hubungi Kami",
+      subtitle: "Layanan pelanggan 24/7",
+      action: () => router.push('/help/faq')
+    },
+    {
+      icon: <MaterialIcons name="rate-review" size={24} color="#B1944D" />,
+      title: "Beri Nilai",
+      subtitle: "Beri rating aplikasi kami",
+      action: () => router.push('/rate')
+    },
+    {
+      icon: <MaterialIcons name="people" size={24} color="#B1944D" />,
+      title: "Undang Teman",
+      subtitle: "Dapatkan voucher Rp50.000",
+      action: () => router.push('/referral')
+    },
+  ];
+
+  // Legal Menu Items
+  const legalMenuItems = [
+    {
+      icon: <MaterialIcons name="policy" size={24} color="#B1944D" />,
+      title: "Ketentuan & Privasi",
+      subtitle: "Syarat dan ketentuan layanan",
+      action: () => router.push('/terms')
+    },
+    {
+      icon: <MaterialIcons name="description" size={24} color="#B1944D" />,
+      title: "Lisensi",
+      subtitle: "Informasi lisensi aplikasi",
+      action: () => router.push('/licenses')
     },
   ];
 
@@ -84,6 +164,7 @@ const AccountScreen = () => {
     { value: userData.tripsCompleted, label: 'Perjalanan' },
     { value: '4.9', label: 'Rating' },
     { value: 'Gold', label: 'Tier' },
+    { value: userData.points, label: 'Poin' },
   ];
 
   const handleUpgrade = () => {
@@ -97,6 +178,28 @@ const AccountScreen = () => {
     userData.email = editEmail;
     setShowEditModal(false);
   };
+
+  const renderMenuSection = (title, items) => (
+    <View style={styles.menuSection}>
+      {title && <Text style={[styles.sectionTitle, darkMode && styles.darkText]}>{title}</Text>}
+      <View style={styles.menuItemsContainer}>
+        {items.map((item, index) => (
+          <TouchableOpacity 
+            key={index}
+            style={[styles.menuItem, darkMode && styles.darkCard]}
+            onPress={item.action}
+          >
+            <View style={styles.menuIcon}>{item.icon}</View>
+            <View style={styles.menuText}>
+              <Text style={[styles.menuTitle, darkMode && styles.darkText]}>{item.title}</Text>
+              <Text style={[styles.menuSubtitle, darkMode && styles.darkSubtext]}>{item.subtitle}</Text>
+            </View>
+            <MaterialIcons name="chevron-right" size={24} color="#B1944D" />
+          </TouchableOpacity>
+        ))}
+      </View>
+    </View>
+  );
 
   return (
     <SafeAreaView style={[styles.safeArea, darkMode && styles.darkSafeArea]}>
@@ -116,11 +219,6 @@ const AccountScreen = () => {
               style={styles.darkModeToggle}
               onPress={() => setDarkMode(!darkMode)}
             >
-              <MaterialIcons 
-                name={darkMode ? "light-mode" : "dark-mode"} 
-                size={24} 
-                color="#FFF" 
-              />
             </TouchableOpacity>
           </View>
         </LinearGradient>
@@ -171,23 +269,13 @@ const AccountScreen = () => {
             </View>
           ))}
         </View>
-        {/* Account Menu */}
-        <View style={styles.menuContainer}>
-          {accountMenuItems.map((item, index) => (
-            <TouchableOpacity 
-              key={index}
-              style={[styles.menuItem, darkMode && styles.darkCard]}
-              onPress={item.action}
-            >
-              <View style={styles.menuIcon}>{item.icon}</View>
-              <View style={styles.menuText}>
-                <Text style={[styles.menuTitle, darkMode && styles.darkText]}>{item.title}</Text>
-                <Text style={[styles.menuSubtitle, darkMode && styles.darkSubtext]}>{item.subtitle}</Text>
-              </View>
-              <MaterialIcons name="chevron-right" size={24} color="#B1944D" />
-            </TouchableOpacity>
-          ))}
-        </View>
+
+        {/* Account Menu Sections */}
+        {renderMenuSection("AKUN SAYA", accountMenuItems)}
+        {renderMenuSection("PENGATURAN", settingsMenuItems)}
+        {renderMenuSection("BANTUAN & DUKUNGAN", helpMenuItems)}
+        {renderMenuSection("LEGAL", legalMenuItems)}
+
         {/* Dark Mode Switch */}
         <View style={[styles.settingItem, darkMode && styles.darkCard]}>
           <View style={styles.settingLeft}>
@@ -205,10 +293,8 @@ const AccountScreen = () => {
             trackColor={{ false: '#E0E0E0', true: '#B1944D' }}
           />
         </View>
-
-        {/* Logout Button */}
-        <TouchableOpacity style={styles.logoutButton}>
-        </TouchableOpacity>
+        {/* App Version */}
+        <Text style={[styles.versionText, darkMode && styles.darkSubtext]}>Versi Aplikasi 5.18.0 copyright: rian andi saputra</Text>
       </ScrollView>
 
       {/* Upgrade Modal */}
@@ -526,80 +612,29 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 0,
   },
-  cardHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  cardTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#FFF',
-    fontFamily: 'serif',
-    letterSpacing: 0.5,
-  },
-  crownIcon: {
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  cardName: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#FFF',
-    marginBottom: 25,
-    fontFamily: 'serif',
-  },
-  cardDetails: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  cardLabel: {
-    fontSize: 12,
-    color: 'rgba(255, 255, 255, 0.7)',
-    fontFamily: 'serif',
-  },
-  cardValue: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#FFF',
-    marginTop: 5,
-    fontFamily: 'serif',
-  },
-  upgradeButton: {
-    marginTop: 20,
-    paddingVertical: 12,
-    backgroundColor: '#FFF',
-    borderRadius: 10,
-    alignItems: 'center',
-  },
-  upgradeButtonText: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: '#B1944D',
-    fontFamily: 'serif',
-  },
-  menuContainer: {
+  menuSection: {
     marginTop: 25,
     marginHorizontal: 20,
+  },
+  sectionTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#666',
+    marginBottom: 15,
+    fontFamily: 'serif',
+  },
+  menuItemsContainer: {
+    borderRadius: 12,
+    overflow: 'hidden',
   },
   menuItem: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 18,
     paddingHorizontal: 15,
-    marginBottom: 10,
     backgroundColor: '#FFF',
-    borderRadius: 12,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 5,
-    elevation: 2,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F0F0F0',
   },
   menuIcon: {
     width: 40,
@@ -650,16 +685,33 @@ const styles = StyleSheet.create({
     fontFamily: 'serif',
   },
   logoutButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 15,
     marginHorizontal: 20,
     marginTop: 25,
-    marginBottom: 40,
-    padding: 15,
-    alignItems: 'center',
+    marginBottom: 15,
+    backgroundColor: '#FFF',
+    borderRadius: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 5,
+    elevation: 2,
   },
   logoutText: {
-    fontSize: 14,
+    fontSize: 16,
     color: '#FF6B6B',
     fontWeight: '600',
+    marginLeft: 10,
+    fontFamily: 'serif',
+  },
+  versionText: {
+    textAlign: 'center',
+    fontSize: 12,
+    color: '#999',
+    marginBottom: 20,
     fontFamily: 'serif',
   },
   modalOverlay: {

@@ -61,7 +61,7 @@ const WelcomePage = () => {
             ]}
           >
             <Image 
-              source={require('../assets/images/logo.png')} 
+              source={require('../assets/images/logobecak.png')} 
               style={styles.logo}
               resizeMode="contain"
             />
