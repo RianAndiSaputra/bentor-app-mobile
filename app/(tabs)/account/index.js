@@ -100,19 +100,19 @@ const AccountScreen = () => {
       icon: <MaterialIcons name="notifications" size={24} color="#B1944D" />,
       title: "Notifikasi",
       subtitle: "Kelola pemberitahuan",
-      action: () => router.push('/notifications')
+      action: () => router.push('account/notifications')
     },
     {
       icon: <MaterialIcons name="security" size={24} color="#B1944D" />,
       title: "Keamanan",
       subtitle: "PIN, sidik jari, dll",
-      action: () => router.push('/security')
+      action: () => router.push('account/security')
     },
     {
       icon: <MaterialIcons name="language" size={24} color="#B1944D" />,
       title: "Bahasa",
       subtitle: "Pilih bahasa aplikasi",
-      action: () => router.push('/language')
+      action: () => router.push('account/language')
     },
   ];
 
@@ -134,13 +134,13 @@ const AccountScreen = () => {
       icon: <MaterialIcons name="rate-review" size={24} color="#B1944D" />,
       title: "Beri Nilai",
       subtitle: "Beri rating aplikasi kami",
-      action: () => router.push('/rate')
+      action: () => router.push('account/rating')
     },
     {
       icon: <MaterialIcons name="people" size={24} color="#B1944D" />,
       title: "Undang Teman",
       subtitle: "Dapatkan voucher Rp50.000",
-      action: () => router.push('/referral')
+      action: () => router.push('account/referral')
     },
   ];
 
@@ -150,13 +150,13 @@ const AccountScreen = () => {
       icon: <MaterialIcons name="policy" size={24} color="#B1944D" />,
       title: "Ketentuan & Privasi",
       subtitle: "Syarat dan ketentuan layanan",
-      action: () => router.push('/terms')
+      action: () => router.push('account/terms')
     },
     {
       icon: <MaterialIcons name="description" size={24} color="#B1944D" />,
       title: "Lisensi",
       subtitle: "Informasi lisensi aplikasi",
-      action: () => router.push('/licenses')
+      action: () => router.push('account/lisensi')
     },
   ];
 
