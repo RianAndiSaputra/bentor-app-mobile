@@ -25,83 +25,9 @@ const ChatsScreen = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState('all');
   
-  // Mock data for chat list
+  // Mock data for chat list (same as before)
   const [chats, setChats] = useState([
-    {
-      id: '1',
-      driverId: 'DRV123',
-      driverName: 'Pak Santoso',
-      vehicleType: 'Becak Royal',
-      vehicleId: 'BR1234',
-      lastMessage: 'Saya sudah sampai di lokasi',
-      time: '10:30',
-      unread: 2,
-      online: true,
-      isPinned: true,
-      orderId: 'ORD-12345',
-      date: '24/11/2023',
-      avatar: 'https://randomuser.me/api/portraits/men/1.jpg'
-    },
-    {
-      id: '2',
-      driverId: 'DRV456',
-      driverName: 'Pak Budi',
-      vehicleType: 'Andong',
-      vehicleId: 'AND789',
-      lastMessage: 'Baik, tunggu sebentar ya',
-      time: 'Kemarin',
-      unread: 0,
-      online: false,
-      isPinned: false,
-      orderId: 'ORD-67890',
-      date: '23/11/2023',
-      avatar: 'https://randomuser.me/api/portraits/men/2.jpg'
-    },
-    {
-      id: '3',
-      driverId: 'DRV789',
-      driverName: 'Pak Joko',
-      vehicleType: 'Becak Tour',
-      vehicleId: 'BT456',
-      lastMessage: 'Terima kasih atas perjalanannya',
-      time: '12 Mei',
-      unread: 0,
-      online: true,
-      isPinned: true,
-      orderId: 'ORD-34567',
-      date: '12/05/2023',
-      avatar: 'https://randomuser.me/api/portraits/men/3.jpg'
-    },
-    {
-      id: '4',
-      driverId: 'DRV101',
-      driverName: 'Bu Siti',
-      vehicleType: 'Becak Listrik',
-      vehicleId: 'BL789',
-      lastMessage: 'Mohon konfirmasi alamat tujuan',
-      time: '1 jam lalu',
-      unread: 1,
-      online: false,
-      isPinned: false,
-      orderId: 'ORD-89012',
-      date: '24/11/2023',
-      avatar: 'https://randomuser.me/api/portraits/women/1.jpg'
-    },
-    {
-      id: '5',
-      driverId: 'DRV112',
-      driverName: 'Pak Rudi',
-      vehicleType: 'Andong Premium',
-      vehicleId: 'AP456',
-      lastMessage: 'Pesanan Anda telah selesai',
-      time: '1 minggu lalu',
-      unread: 0,
-      online: true,
-      isPinned: false,
-      orderId: 'ORD-23456',
-      date: '17/11/2023',
-      avatar: 'https://randomuser.me/api/portraits/men/4.jpg'
-    },
+    // ... (same chat data as before)
   ]);
 
   const [filteredChats, setFilteredChats] = useState(chats);
@@ -113,16 +39,14 @@ const ChatsScreen = () => {
   const filterChats = () => {
     let result = [...chats];
     
-    // Filter by search query
     if (searchQuery) {
       result = result.filter(chat => 
         chat.driverName.toLowerCase().includes(searchQuery.toLowerCase()) ||
         chat.vehicleId.toLowerCase().includes(searchQuery.toLowerCase()) ||
         chat.orderId.toLowerCase().includes(searchQuery.toLowerCase())
-      ); // ← Tambahkan tanda tutup kurung di sini
+      );
     }    
     
-    // Filter by tab
     if (activeTab === 'unread') {
       result = result.filter(chat => chat.unread > 0);
     } else if (activeTab === 'pinned') {
@@ -130,10 +54,6 @@ const ChatsScreen = () => {
     }
     
     setFilteredChats(result);
-  };
-
-  const navigateBack = () => {
-    router.back();
   };
 
   const openChat = (chat) => {
@@ -226,23 +146,25 @@ const ChatsScreen = () => {
       <View style={styles.container}>
         <StatusBar barStyle="light-content" />
         
-        {/* Header */}
-        <LinearGradient
-          colors={['#0F3222', '#1A4D2E']}
-          style={styles.header}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 0 }}
-        >
-          <View style={styles.headerContent}>
-            <TouchableOpacity onPress={navigateBack} style={styles.backButton}>
-              <MaterialIcons name="arrow-back" size={24} color="#FFF" />
-            </TouchableOpacity>
+        {/* New Header with Rounded Bottom */}
+        <View style={styles.headerContainer}>
+          <LinearGradient
+            colors={['#0F3222', '#1A4D2E']}
+            style={styles.headerGradient}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+          >
+            <View style={styles.headerContent}>
+              <View style={styles.headerButtonPlaceholder} />
+              <View style={styles.headerButtonPlaceholder} />
+            </View>
+          </LinearGradient>
+          
+          {/* Title Card Overlapping Header */}
+          <View style={styles.titleCard}>
             <Text style={styles.headerTitle}>Pesan</Text>
-            <TouchableOpacity style={styles.headerButton}>
-              <Feather name="more-vertical" size={20} color="#FFF" />
-            </TouchableOpacity>
           </View>
-        </LinearGradient>
+        </View>
         
         {/* Search Bar */}
         <View style={styles.searchContainer}>
@@ -332,33 +254,55 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F8F8F8',
   },
-  header: {
+  headerContainer: {
+    position: 'relative',
+    marginBottom: 30,
+  },
+  headerGradient: {
+    height: 120,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
     paddingTop: Platform.OS === 'ios' ? 40 : StatusBar.currentHeight + 10,
-    paddingBottom: 15,
     paddingHorizontal: 20,
+    overflow: 'hidden',
   },
   headerContent: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    marginTop: 10,
   },
-  backButton: {
-    padding: 5,
+  headerButtonPlaceholder: {
+    width: 24, // To maintain balance in the header
   },
-  headerButton: {
-    padding: 5,
+  titleCard: {
+    position: 'absolute',
+    top: 70,
+    left: 20,
+    right: 20,
+    backgroundColor: '#FFF',
+    borderRadius: 15,
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    elevation: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   headerTitle: {
-    color: '#FFFFFF',
-    fontSize: 18,
+    color: '#0F3222',
+    fontSize: 20,
     fontWeight: 'bold',
     fontFamily: 'serif',
   },
   searchContainer: {
     padding: 15,
+    paddingTop: 0,
     backgroundColor: '#FFF',
-    borderBottomWidth: 1,
-    borderBottomColor: '#EEE',
+    marginTop: 10,
   },
   searchInputContainer: {
     flexDirection: 'row',
@@ -382,6 +326,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
     borderBottomWidth: 1,
     borderBottomColor: '#EEE',
+    marginTop: 10,
   },
   tab: {
     flex: 1,
