@@ -254,11 +254,11 @@ const HomeScreen = () => {
                   <Ionicons name="arrow-forward" size={14} color="#0F3222" />
                 </TouchableOpacity>
               </View>
-              <Image 
-                source={require('../../assets/images/becak.png')} 
-                style={styles.promoBecakImage}
-                resizeMode="contain"
-              />
+                <Image 
+                  source={require('../../../assets/images/becak.png')} 
+                  style={styles.promoBecakImage}
+                  resizeMode="contain"
+                />
             </View>
           </LinearGradient>
         </View>
@@ -283,7 +283,7 @@ const HomeScreen = () => {
             <View style={styles.headerContent}>
               <TouchableOpacity onPress={navigateToProfile} style={styles.userInfo}>
                 <Image 
-                  source={require('../../assets/images/becak.png')} 
+                  source={require('../../../assets/images/becak.png')} 
                   style={styles.userAvatar}
                 />
                 <View style={styles.userTextContainer}>
@@ -322,33 +322,6 @@ const HomeScreen = () => {
           </Animated.View>
         </LinearGradient>
       </Animated.View>
-      
-      {/* Bottom Navigation */}
-      <View style={styles.bottomNav}>
-        {[
-          { name: 'Home', icon: 'home', route: '/home' },
-          { name: 'History', icon: 'time', route: '/history' },
-          { name: 'Pesan', icon: 'chatbubble', route: '/riwayat-pesan' },
-          { name: 'Akun', icon: 'person', route: '/account' }
-        ].map((item, index) => (
-          <TouchableOpacity 
-            key={item.name}
-            style={styles.navItem} 
-            onPress={() => router.push(item.route)}
-          >
-            <Ionicons 
-              name={item.icon} 
-              size={22} 
-              color={index === 0 ? '#0F3222' : '#999'} 
-              style={styles.navIcon}
-            />
-            <Text style={[
-              styles.navText,
-              index === 0 && styles.activeNavText
-            ]}>{item.name}</Text>
-          </TouchableOpacity>
-        ))}
-      </View>
     </View>
   );
 };
