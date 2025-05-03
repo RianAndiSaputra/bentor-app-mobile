@@ -7,9 +7,10 @@ import {
   ScrollView, 
   SafeAreaView, 
   Linking,
-  TouchableOpacity // Ditambahkan untuk memperbaiki error
+  TouchableOpacity
 } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 
 const licenses = [
   {
@@ -40,6 +41,8 @@ const licenses = [
 ];
 
 const LicensesScreen = () => {
+  const router = useRouter();
+
   const handlePressLink = (url) => {
     Linking.openURL(url).catch(err => console.error("Couldn't load page", err));
   };
@@ -47,6 +50,12 @@ const LicensesScreen = () => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.header}>
+        <TouchableOpacity 
+          style={styles.backButton} 
+          onPress={() => router.back()}
+        >
+          <MaterialIcons name="arrow-back" size={24} color="#0F3222" />
+        </TouchableOpacity>
         <Text style={styles.headerTitle}>Lisensi</Text>
       </View>
 
@@ -86,16 +95,25 @@ const styles = StyleSheet.create({
     backgroundColor: '#F8F8F8',
   },
   header: {
+    flexDirection: 'row',
+    alignItems: 'center',
     padding: 20,
     borderBottomWidth: 1,
     borderBottomColor: '#F0F0F0',
     backgroundColor: '#FFF',
+    position: 'relative',
+  },
+  backButton: {
+    position: 'absolute',
+    left: 15,
+    zIndex: 1,
   },
   headerTitle: {
     fontSize: 22,
     fontWeight: 'bold',
     color: '#0F3222',
     textAlign: 'center',
+    flex: 1,
   },
   container: {
     flex: 1,
