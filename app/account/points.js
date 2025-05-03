@@ -3,10 +3,12 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Dimensions, SafeAreaView, FlatList } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons, FontAwesome5, Ionicons, Feather, AntDesign } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 
 const { width } = Dimensions.get('window');
 
 const PointsScreen = () => {
+  const router = useRouter();
   const [points, setPoints] = useState(4200);
   const [showPoints, setShowPoints] = useState(true);
   const [activeTab, setActiveTab] = useState('hadiah');
@@ -22,28 +24,28 @@ const PointsScreen = () => {
       id: '1',
       name: 'Voucher Royal 50K',
       points: 1000,
-      image: require('../../../assets/images/logo.png'),
+      image: require('../../assets/images/logo.png'),
       stock: 'Tersedia',
     },
     {
       id: '2',
       name: 'Gratis Ongkir Royal Mart',
       points: 500,
-      image: require('../../../assets/images/logo.png'),
+      image: require('../../assets/images/logo.png'),
       stock: 'Tersedia',
     },
     {
       id: '3',
       name: 'Diskon 30% Becak Royal',
       points: 750,
-      image: require('../../../assets/images/logo.png'),
+      image: require('../../assets/images/logo.png'),
       stock: 'Habis',
     },
     {
       id: '4',
       name: 'Cashback 20% Royal Food',
       points: 1200,
-      image: require('../../../assets/images/logo.png'),
+      image: require('../../assets/images/logo.png'),
       stock: 'Tersedia',
     },
   ];
@@ -117,6 +119,12 @@ const PointsScreen = () => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.header}>
+        <TouchableOpacity 
+          style={styles.backButton}
+          onPress={() => router.back()}
+        >
+          <MaterialIcons name="arrow-back" size={24} color="#0F3222" />
+        </TouchableOpacity>
         <Text style={styles.headerTitle}>Poin Royal</Text>
       </View>
 
@@ -224,10 +232,10 @@ const PointsScreen = () => {
           <Text style={styles.sectionTitle}>Promo Double Poin</Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <TouchableOpacity style={styles.promoCard}>
-              <Image source={require('../../../assets/images/logo.png')} style={styles.promoImage} />
+              <Image source={require('../../assets/images/logo.png')} style={styles.promoImage} />
             </TouchableOpacity>
             <TouchableOpacity style={styles.promoCard}>
-              <Image source={require('../../../assets/images/logo.png')} style={styles.promoImage} />
+              <Image source={require('../../assets/images/logo.png')} style={styles.promoImage} />
             </TouchableOpacity>
           </ScrollView>
         </View>
@@ -242,9 +250,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
   },
   header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
     padding: 20,
     borderBottomWidth: 1,
     borderBottomColor: '#F0F0F0',
+    position: 'relative',
+  },
+  backButton: {
+    position: 'absolute',
+    left: 20,
+    padding: 5,
   },
   headerTitle: {
     fontSize: 22,

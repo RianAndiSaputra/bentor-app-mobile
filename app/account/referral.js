@@ -2,8 +2,10 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, TextInput, Share, ScrollView } from 'react-native';
 import { MaterialIcons, AntDesign, Feather } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 
 const ReferralScreen = () => {
+  const router = useRouter();
   const [phoneNumber, setPhoneNumber] = useState('');
   const referralCode = 'BECAKJOGJA123';
 
@@ -36,6 +38,12 @@ const ReferralScreen = () => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.header}>
+        <TouchableOpacity 
+          style={styles.backButton} 
+          onPress={() => router.back()}
+        >
+          <MaterialIcons name="arrow-back" size={24} color="#0F3222" />
+        </TouchableOpacity>
         <Text style={styles.headerTitle}>Undang Teman</Text>
       </View>
 
@@ -105,16 +113,25 @@ const styles = StyleSheet.create({
     backgroundColor: '#F8F8F8',
   },
   header: {
+    flexDirection: 'row',
+    alignItems: 'center',
     padding: 20,
     borderBottomWidth: 1,
     borderBottomColor: '#F0F0F0',
     backgroundColor: '#FFF',
+    position: 'relative',
+  },
+  backButton: {
+    position: 'absolute',
+    left: 15,
+    zIndex: 1,
   },
   headerTitle: {
     fontSize: 22,
     fontWeight: 'bold',
     color: '#0F3222',
     textAlign: 'center',
+    flex: 1,
   },
   container: {
     flex: 1,

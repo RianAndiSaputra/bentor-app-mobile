@@ -2,8 +2,10 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Switch, TouchableOpacity, SafeAreaView } from 'react-native';
 import { MaterialIcons, Ionicons, FontAwesome5 } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 
 const NotificationsScreen = () => {
+  const router = useRouter();
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [emailNotifications, setEmailNotifications] = useState(true);
   const [smsNotifications, setSmsNotifications] = useState(false);
@@ -85,6 +87,12 @@ const NotificationsScreen = () => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.header}>
+        <TouchableOpacity 
+          style={styles.backButton} 
+          onPress={() => router.back()}
+        >
+          <MaterialIcons name="arrow-back" size={24} color="#0F3222" />
+        </TouchableOpacity>
         <Text style={styles.headerTitle}>Pengaturan Notifikasi</Text>
       </View>
 
@@ -115,7 +123,10 @@ const NotificationsScreen = () => {
           </View>
         ))}
 
-        <TouchableOpacity style={styles.soundSettings}>
+        <TouchableOpacity 
+          style={styles.soundSettings}
+          onPress={() => router.push('/account/notification-sound')}
+        >
           <View style={styles.itemLeft}>
             <View style={styles.itemIcon}>
               <Ionicons name="volume-high" size={24} color="#B1944D" />
@@ -128,7 +139,10 @@ const NotificationsScreen = () => {
           <MaterialIcons name="chevron-right" size={24} color="#B1944D" />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.advancedSettings}>
+        <TouchableOpacity 
+          style={styles.advancedSettings}
+          onPress={() => router.push('/account/notification-advanced')}
+        >
           <Text style={styles.advancedText}>Pengaturan Lanjutan</Text>
           <MaterialIcons name="chevron-right" size={24} color="#B1944D" />
         </TouchableOpacity>
@@ -143,16 +157,25 @@ const styles = StyleSheet.create({
     backgroundColor: '#F8F8F8',
   },
   header: {
+    flexDirection: 'row',
+    alignItems: 'center',
     padding: 20,
     borderBottomWidth: 1,
     borderBottomColor: '#F0F0F0',
     backgroundColor: '#FFF',
+    position: 'relative',
+  },
+  backButton: {
+    position: 'absolute',
+    left: 15,
+    zIndex: 1,
   },
   headerTitle: {
     fontSize: 22,
     fontWeight: 'bold',
     color: '#0F3222',
     textAlign: 'center',
+    flex: 1,
   },
   container: {
     flex: 1,

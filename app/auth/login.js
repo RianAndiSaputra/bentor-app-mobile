@@ -103,7 +103,7 @@ const LoginScreen = () => {
         useNativeDriver: true,
       }),
     ]).start(() => {
-      router.replace('/home');
+    router.replace('/halaman-utama/home');
     });
   };
 

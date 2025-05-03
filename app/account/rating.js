@@ -2,8 +2,10 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, TextInput } from 'react-native';
 import { MaterialIcons, AntDesign } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 
 const RatingScreen = () => {
+  const router = useRouter();
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
 
@@ -14,11 +16,18 @@ const RatingScreen = () => {
   const submitRating = () => {
     // Logic untuk mengirim rating ke server
     alert('Terima kasih atas penilaian Anda!');
+    router.back(); // Navigate back after submission
   };
 
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.header}>
+        <TouchableOpacity 
+          style={styles.backButton}
+          onPress={() => router.back()}
+        >
+          <MaterialIcons name="arrow-back" size={24} color="#0F3222" />
+        </TouchableOpacity>
         <Text style={styles.headerTitle}>Beri Nilai</Text>
       </View>
 
@@ -74,10 +83,19 @@ const styles = StyleSheet.create({
     backgroundColor: '#F8F8F8',
   },
   header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
     padding: 20,
     borderBottomWidth: 1,
     borderBottomColor: '#F0F0F0',
     backgroundColor: '#FFF',
+    position: 'relative',
+  },
+  backButton: {
+    position: 'absolute',
+    left: 20,
+    padding: 5,
   },
   headerTitle: {
     fontSize: 22,

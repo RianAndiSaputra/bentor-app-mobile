@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, SafeAreaView } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 
 const languages = [
   { code: 'id', name: 'Bahasa Indonesia', native: 'Indonesia', selected: true },
@@ -13,6 +14,7 @@ const languages = [
 ];
 
 const LanguageScreen = () => {
+  const router = useRouter();
   const [selectedLang, setSelectedLang] = useState('id');
   const [showOtherLanguages, setShowOtherLanguages] = useState(false);
 
@@ -25,6 +27,12 @@ const LanguageScreen = () => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.header}>
+        <TouchableOpacity 
+          style={styles.backButton}
+          onPress={() => router.back()}
+        >
+          <MaterialIcons name="arrow-back" size={24} color="#0F3222" />
+        </TouchableOpacity>
         <Text style={styles.headerTitle}>Pengaturan Bahasa</Text>
       </View>
 
@@ -78,16 +86,25 @@ const styles = StyleSheet.create({
     backgroundColor: '#F8F8F8',
   },
   header: {
+    flexDirection: 'row',
+    alignItems: 'center',
     padding: 20,
     borderBottomWidth: 1,
     borderBottomColor: '#F0F0F0',
     backgroundColor: '#FFF',
+    position: 'relative',
+  },
+  backButton: {
+    position: 'absolute',
+    left: 20,
+    zIndex: 1,
   },
   headerTitle: {
     fontSize: 22,
     fontWeight: 'bold',
     color: '#0F3222',
     textAlign: 'center',
+    flex: 1,
   },
   container: {
     flex: 1,

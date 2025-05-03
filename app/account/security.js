@@ -2,8 +2,10 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Switch, TouchableOpacity, SafeAreaView, Modal, TextInput } from 'react-native';
 import { MaterialIcons, Ionicons, FontAwesome5, Feather } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 
 const SecurityScreen = () => {
+  const router = useRouter();
   const [biometricEnabled, setBiometricEnabled] = useState(true);
   const [pinEnabled, setPinEnabled] = useState(false);
   const [showPinModal, setShowPinModal] = useState(false);
@@ -43,14 +45,14 @@ const SecurityScreen = () => {
       icon: <MaterialIcons name="devices" size={24} color="#B1944D" />,
       label: "Perangkat Terhubung",
       description: "2 perangkat aktif",
-      action: () => {},
+      action: () => router.push('/account/connected-devices'),
       type: "navigate"
     },
     {
       icon: <MaterialIcons name="security" size={24} color="#B1944D" />,
       label: "Verifikasi 2 Langkah",
       description: "Aktifkan untuk keamanan ekstra",
-      action: () => {},
+      action: () => router.push('/account/two-factor-auth'),
       type: "navigate"
     }
   ];
@@ -82,6 +84,12 @@ const SecurityScreen = () => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.header}>
+        <TouchableOpacity 
+          style={styles.backButton} 
+          onPress={() => router.back()}
+        >
+          <MaterialIcons name="arrow-back" size={24} color="#0F3222" />
+        </TouchableOpacity>
         <Text style={styles.headerTitle}>Keamanan Akun</Text>
       </View>
 
@@ -287,16 +295,25 @@ const styles = StyleSheet.create({
     backgroundColor: '#F8F8F8',
   },
   header: {
+    flexDirection: 'row',
+    alignItems: 'center',
     padding: 20,
     borderBottomWidth: 1,
     borderBottomColor: '#F0F0F0',
     backgroundColor: '#FFF',
+    position: 'relative',
+  },
+  backButton: {
+    position: 'absolute',
+    left: 15,
+    zIndex: 1,
   },
   headerTitle: {
     fontSize: 22,
     fontWeight: 'bold',
     color: '#0F3222',
     textAlign: 'center',
+    flex: 1,
   },
   container: {
     flex: 1,

@@ -3,10 +3,12 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Dimensions, SafeAreaView, FlatList } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons, FontAwesome5, Ionicons, Feather, AntDesign } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 
 const { width } = Dimensions.get('window');
 
 const VouchersScreen = () => {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState('aktif');
   const [expandedVoucher, setExpandedVoucher] = useState(null);
 
@@ -24,7 +26,7 @@ const VouchersScreen = () => {
       description: 'Dapatkan diskon 50% untuk semua perjalanan dengan Becak Royal',
       expiryDate: 'Berlaku hingga 30 Des 2023',
       terms: 'Min. pembelian Rp 50.000. Maks. diskon Rp 25.000',
-      image: require('../../../assets/images/logo.png'),
+      image: require('../../assets/images/logo.png'),
       isExpanded: false,
     },
     {
@@ -34,7 +36,7 @@ const VouchersScreen = () => {
       description: 'Gratis ongkir tanpa minimum pembelian di Royal Mart',
       expiryDate: 'Berlaku hingga 15 Jan 2024',
       terms: 'Maks. diskon Rp 15.000. Tidak bisa digabung dengan promo lain',
-      image: require('../../../assets/images/logo.png'),
+      image: require('../../assets/images/logo.png'),
       isExpanded: false,
     },
   ];
@@ -47,7 +49,7 @@ const VouchersScreen = () => {
       description: 'Dapatkan cashback 30% untuk pesanan Royal Food',
       expiryDate: 'Mulai 1 Des 2023',
       terms: 'Min. pembelian Rp 75.000. Maks. cashback Rp 30.000',
-      image: require('../../../assets/images/logo.png'),
+      image: require('../../assets/images/logo.png'),
       isExpanded: false,
     },
   ];
@@ -60,7 +62,7 @@ const VouchersScreen = () => {
       description: 'Diskon 20% untuk pengguna baru',
       expiryDate: 'Kedaluwarsa 30 Nov 2023',
       terms: 'Min. pembelian Rp 40.000. Maks. diskon Rp 20.000',
-      image: require('../../../assets/images/logo.png'),
+      image: require('../../assets/images/logo.png'),
       isExpanded: false,
     },
   ];
@@ -102,6 +104,12 @@ const VouchersScreen = () => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.header}>
+        <TouchableOpacity 
+          style={styles.backButton}
+          onPress={() => router.back()}
+        >
+          <MaterialIcons name="arrow-back" size={24} color="#0F3222" />
+        </TouchableOpacity>
         <Text style={styles.headerTitle}>Voucher Saya</Text>
       </View>
 

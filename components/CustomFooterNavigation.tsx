@@ -15,13 +15,13 @@ export default function CustomFooterNavigation() {
   const pathname = usePathname();
 
   const handlePress = (tabName: string) => {
-    router.push(`/${tabName}` as any);
+    router.push(`/halaman-utama/${tabName}` as any);
   };
 
   return (
     <View style={styles.container}>
       {tabs.map((tab) => {
-        const focused = pathname === `/${tab.name}`;
+        const focused = pathname.startsWith(`/halaman-utama/${tab.name}`);
         const iconName = focused ? tab.icon : `${tab.icon}-outline`;
         const color = focused ? '#3A7D44' : '#6B7280';
 

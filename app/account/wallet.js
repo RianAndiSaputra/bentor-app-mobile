@@ -3,10 +3,12 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Dimensions, SafeAreaView, FlatList } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons, FontAwesome5, Ionicons, Feather, AntDesign } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 
 const { width } = Dimensions.get('window');
 
 const WalletScreen = () => {
+  const router = useRouter();
   const [balance, setBalance] = useState(1250000);
   const [showBalance, setShowBalance] = useState(true);
   const [activeTab, setActiveTab] = useState('dompet');
@@ -124,6 +126,12 @@ const WalletScreen = () => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.header}>
+        <TouchableOpacity 
+          style={styles.backButton}
+          onPress={() => router.back()}
+        >
+          <MaterialIcons name="arrow-back" size={24} color="#0F3222" />
+        </TouchableOpacity>
         <Text style={styles.headerTitle}>Dompet & Pembayaran</Text>
       </View>
 
@@ -253,10 +261,10 @@ const WalletScreen = () => {
           <Text style={styles.sectionTitle}>Promo Pembayaran</Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <TouchableOpacity style={styles.promoCard}>
-              <Image source={require('../../../assets/images/logo.png')} style={styles.promoImage} />
+              <Image source={require('../../assets/images/logo.png')} style={styles.promoImage} />
             </TouchableOpacity>
             <TouchableOpacity style={styles.promoCard}>
-              <Image source={require('../../../assets/images/logo.png')} style={styles.promoImage} />
+              <Image source={require('../../assets/images/logo.png')} style={styles.promoImage} />
             </TouchableOpacity>
           </ScrollView>
         </View>
@@ -271,9 +279,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
   },
   header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
     padding: 20,
     borderBottomWidth: 1,
     borderBottomColor: '#F0F0F0',
+    position: 'relative',
+  },
+  backButton: {
+    position: 'absolute',
+    left: 20,
+    padding: 5,
   },
   headerTitle: {
     fontSize: 22,
