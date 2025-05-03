@@ -61,38 +61,20 @@ const AccountScreen = () => {
 
   const accountMenuItems = [
     {
-      icon: <MaterialIcons name="payment" size={24} color="#B1944D" />,
-      title: "Pembayaran Royal",
-      subtitle: "Metode pembayaran eksklusif",
-      action: () => router.push('/payment-methods')
-    },
-    {
       icon: <MaterialIcons name="history" size={24} color="#B1944D" />,
-      title: "Riwayat Royal",
+      title: "Aktifikas",
       subtitle: "Perjalanan mewah Anda",
       action: () => router.push('/history')
     },
     {
-      icon: <Ionicons name="gift" size={24} color="#B1944D" />,
-      title: "Hadiah Eksklusif",
-      subtitle: "Voucher & promo royal",
-      action: () => router.push('/vouchers')
-    },
-    {
-      icon: <Feather name="shield" size={24} color="#B1944D" />,
-      title: "Keamanan Royal",
-      subtitle: "Pengaturan keamanan akun",
-      action: () => router.push('/security')
-    },
-    {
       icon: <Ionicons name="settings" size={24} color="#B1944D" />,
-      title: "Pengaturan Eksklusif",
+      title: "Pengaturan",
       subtitle: "Personalisasi pengalaman",
       action: () => router.push('/settings')
     },
     {
       icon: <MaterialIcons name="help" size={24} color="#B1944D" />,
-      title: "Bantuan Royal",
+      title: "Pusat Bantuan",
       subtitle: "Layanan pelanggan premium",
       action: () => router.push('/help')
     },
@@ -130,7 +112,6 @@ const AccountScreen = () => {
           end={{ x: 1, y: 0 }}
         >
           <View style={styles.headerContent}>
-            <Text style={styles.headerTitle}>Akun Royal</Text>
             <TouchableOpacity 
               style={styles.darkModeToggle}
               onPress={() => setDarkMode(!darkMode)}
@@ -190,45 +171,6 @@ const AccountScreen = () => {
             </View>
           ))}
         </View>
-
-        {/* Membership Card */}
-        <LinearGradient
-          colors={['#B1944D', '#D4BF83']}
-          style={styles.membershipCard}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 0 }}
-        >
-          <View style={styles.cardHeader}>
-            <Text style={styles.cardTitle}>Royal Membership</Text>
-            <View style={styles.crownIcon}>
-              <FontAwesome5 name="crown" size={20} color="#FFF" />
-            </View>
-          </View>
-          
-          <Text style={styles.cardName}>{userData.name}</Text>
-          
-          <View style={styles.cardDetails}>
-            <View>
-              <Text style={styles.cardLabel}>Member Since</Text>
-              <Text style={styles.cardValue}>{userData.memberSince}</Text>
-            </View>
-            
-            <View>
-              <Text style={styles.cardLabel}>Member ID</Text>
-              <Text style={styles.cardValue}>ROYAL-789012</Text>
-            </View>
-          </View>
-          
-          {!premiumMember && (
-            <TouchableOpacity 
-              style={styles.upgradeButton}
-              onPress={() => setShowUpgradeModal(true)}
-            >
-              <Text style={styles.upgradeButtonText}>UPGRADE TO ROYAL</Text>
-            </TouchableOpacity>
-          )}
-        </LinearGradient>
-
         {/* Account Menu */}
         <View style={styles.menuContainer}>
           {accountMenuItems.map((item, index) => (
@@ -246,7 +188,6 @@ const AccountScreen = () => {
             </TouchableOpacity>
           ))}
         </View>
-
         {/* Dark Mode Switch */}
         <View style={[styles.settingItem, darkMode && styles.darkCard]}>
           <View style={styles.settingLeft}>
@@ -267,7 +208,6 @@ const AccountScreen = () => {
 
         {/* Logout Button */}
         <TouchableOpacity style={styles.logoutButton}>
-          <Text style={styles.logoutText}>Keluar dari Akun Royal</Text>
         </TouchableOpacity>
       </ScrollView>
 
@@ -585,17 +525,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#F0F0F0',
     position: 'absolute',
     right: 0,
-  },
-  membershipCard: {
-    marginHorizontal: 20,
-    marginTop: 20,
-    padding: 25,
-    borderRadius: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 5 },
-    shadowOpacity: 0.2,
-    shadowRadius: 10,
-    elevation: 8,
   },
   cardHeader: {
     flexDirection: 'row',
